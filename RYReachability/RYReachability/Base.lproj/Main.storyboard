@@ -51,16 +51,26 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3GS-27-dYs">
+                                <rect key="frame" x="144" y="81" width="168" height="30"/>
+                                <state key="normal" title="获取当前最新的网络状态"/>
+                                <connections>
+                                    <action selector="getNewNetState:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bzO-nw-6U5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.62531494070438909" green="0.90764839085388083" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="OLA-Qp-YEk" firstAttribute="leading" secondItem="9GO-Yg-dFd" secondAttribute="trailing" constant="19" id="017-Sl-fi0"/>
                             <constraint firstItem="tdq-9N-wxv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="105" id="8lU-NE-ghR"/>
                             <constraint firstItem="OLA-Qp-YEk" firstAttribute="centerY" secondItem="9GO-Yg-dFd" secondAttribute="centerY" id="AnP-MM-Xis"/>
+                            <constraint firstItem="6sU-ud-uTg" firstAttribute="top" secondItem="3GS-27-dYs" secondAttribute="bottom" constant="14.5" id="HJy-IH-IAm"/>
                             <constraint firstItem="9GO-Yg-dFd" firstAttribute="trailing" secondItem="tdq-9N-wxv" secondAttribute="trailing" id="eGJ-dg-gXO"/>
                             <constraint firstItem="6sU-ud-uTg" firstAttribute="leading" secondItem="tdq-9N-wxv" secondAttribute="trailing" constant="19" id="j0P-ek-Qp5"/>
                             <constraint firstItem="tdq-9N-wxv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="58" id="mZs-Fc-7Vm"/>
                             <constraint firstItem="6sU-ud-uTg" firstAttribute="centerY" secondItem="tdq-9N-wxv" secondAttribute="centerY" id="nel-fK-eYO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="3GS-27-dYs" secondAttribute="trailing" constant="268" id="tOh-aO-KzR"/>
+                            <constraint firstItem="3GS-27-dYs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="124" id="vY7-UG-qfn"/>
                             <constraint firstItem="9GO-Yg-dFd" firstAttribute="top" secondItem="tdq-9N-wxv" secondAttribute="bottom" constant="24" id="yNf-Yj-IlW"/>
                         </constraints>
                     </view>
