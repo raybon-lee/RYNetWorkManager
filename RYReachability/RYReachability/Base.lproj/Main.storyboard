@@ -53,6 +53,10 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3GS-27-dYs">
                                 <rect key="frame" x="144" y="81" width="168" height="30"/>
+                                <color key="backgroundColor" red="0.97757338030100138" green="1" blue="0.30931763360366915" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="168" id="P5c-2f-JuJ"/>
+                                </constraints>
                                 <state key="normal" title="获取当前最新的网络状态"/>
                                 <connections>
                                     <action selector="getNewNetState:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bzO-nw-6U5"/>
@@ -69,7 +73,6 @@
                             <constraint firstItem="6sU-ud-uTg" firstAttribute="leading" secondItem="tdq-9N-wxv" secondAttribute="trailing" constant="19" id="j0P-ek-Qp5"/>
                             <constraint firstItem="tdq-9N-wxv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="58" id="mZs-Fc-7Vm"/>
                             <constraint firstItem="6sU-ud-uTg" firstAttribute="centerY" secondItem="tdq-9N-wxv" secondAttribute="centerY" id="nel-fK-eYO"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="3GS-27-dYs" secondAttribute="trailing" constant="268" id="tOh-aO-KzR"/>
                             <constraint firstItem="3GS-27-dYs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="124" id="vY7-UG-qfn"/>
                             <constraint firstItem="9GO-Yg-dFd" firstAttribute="top" secondItem="tdq-9N-wxv" secondAttribute="bottom" constant="24" id="yNf-Yj-IlW"/>
                         </constraints>
