@@ -10,7 +10,15 @@ e.g
 
 =========
 
-```
+    `
+#import "ViewController.h"
+#import "RYPreferanceManager.h"
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
 - (void)viewDidLoad {
 [super viewDidLoad];
 // Do any additional setup after loading the view, typically from a nib.
@@ -58,4 +66,11 @@ NSLog(@"current net status = %@",@(status));
 
 }
 
-```
+- (void)didReceiveMemoryWarning {
+[super didReceiveMemoryWarning];
+// Dispose of any resources that can be recreated.
+}
+
+@end
+    
+    `
