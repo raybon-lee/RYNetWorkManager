@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
  
 
   s.name         = "RYNetWorkManager"
-  s.version      = "0.0.1"
+  s.version      = “1.0.0”
   s.summary      = “The RYNetWorkManager. to help check the iPhone internet is good work”
 
   
@@ -24,16 +24,14 @@ Pod::Spec.new do |s|
   s.author             = { "bfforeverli" => "lipengios@163.com" }
  
  
-   s.platform     = :ios, “7.0”
+   s.platform     = :ios
 
-  #  When using multiple platforms
-  s.ios.deployment_target = “7.0”
+  
  
 
-  s.source       = { :git => "https://github.com/pengleelove/RYNetWorkManager.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/pengleelove/RYNetWorkManager.git", :tag => ’1.0.0‘ }
 
-  s.source_files  = “RYReachability”, "RYReachability/RYReachability/RYReachability/*.{h,m}”
- # s.exclude_files = "Classes/Exclude"
+  s.source_files  =’RYReachability/RYReachability/RYReachability/*.{h,m}‘
 
    s.frameworks = “UIKit”, “CoreTelephony”,”Foundation”
 
