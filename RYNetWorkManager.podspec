@@ -3,7 +3,8 @@ Pod::Spec.new do |s|
   s.version      = "0.0.1"
   s.summary      = "we can check the current network is work"
   s.description  = <<-DESC
-                   DESC
+                   it's a network userd on ios '
+                    DESC
 
   s.homepage     = "https://github.com/pengleelove/RYNetWorkManager"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
@@ -18,7 +19,7 @@ Pod::Spec.new do |s|
 
 
 
-  s.source       = { :git => "https://github.com/pengleelove/RYNetWorkManager.git", :commit => "2235975" }
+  s.source       = { :git => "https://github.com/pengleelove/RYNetWorkManager.git", :TAG => “0.0.1” }
 
   s.source_files  ="RYReachability/RYReachability/RYReachability/*.{h,m}"
 
