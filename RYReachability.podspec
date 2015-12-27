@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 
 
 
-  s.source       = { :git => "https://github.com/pengleelove/RYNetWorkManager.git", :commit => "" }
+  s.source       = { :git => "https://github.com/pengleelove/RYNetWorkManager.git", :commit => "2235975" }
 
   s.source_files  ="RYReachability/RYReachability/RYReachability/*.{h,m}"
 
