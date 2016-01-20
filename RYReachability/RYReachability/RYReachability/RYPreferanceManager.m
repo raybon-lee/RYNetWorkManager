@@ -24,14 +24,14 @@
     return NO;
 }
 
-- (RYNetStatusManager *)netstatusManager{
-    if (!_netstatusManager) {
-        _netstatusManager  = [RYNetStatusManager reachabilityWithHostName:@"http://www.baidu.com"];
-       
-
-    }
-    return _netstatusManager;
-}
+//- (RYNetStatusManager *)netstatusManager{
+//    if (!_netstatusManager) {
+//        _netstatusManager  = [RYNetStatusManager reachabilityWithHostName:@"http://www.baidu.com"];
+//       
+//
+//    }
+//    return _netstatusManager;
+//}
 - (NetWorkSatusType )getReachablitySttatus{
     RYReachabilityStatus  status = self.currentNumberType.unsignedIntegerValue;
     if ([self canReachableViaWiFi] || [self canReachableViaWWAN]) {
@@ -68,7 +68,13 @@
 }
 
 - (void)getReachablityStatusWithChangeBlock:(void (^)(NetWorkSatusType))complete{
+    self.netchangeNotifationBlock = nil;
     self.netchangeNotifationBlock =[complete copy];
+    
+}
+- (void)listenLocalWifiBlock:(CallBackBlock)block{
+    self.block = nil;
+    self.block = [block copy];
     
 }
 - (NetWorkSatusType)currentNetStatusType{
@@ -122,7 +128,15 @@
     if (self) {
 
         __weak typeof(self) weakSelf = self;
-        
+       
+        self.netManager = [RYNetStatusManager reachabilityForLocalWifi];
+        self.netManager.reachableBlock= ^(RYNetStatusManager * man){
+            NSLog(@"======dfdfdfd");
+            weakSelf.currentNumberType = [NSNumber numberWithInteger:man.status];
+            NetWorkSatusType stat =   [weakSelf getReachablitySttatus];
+            weakSelf.block(stat,@"ddd");
+        };
+         self.netstatusManager  = [RYNetStatusManager reachabilityWithHostName:@"http://www.baidu.com"];
         self.netstatusManager.reachableBlock = ^(RYNetStatusManager * manager){
             if (manager.status==RYReachabilityStatus_WiFi) {
                 RYLog(@"current sttus is wifi");

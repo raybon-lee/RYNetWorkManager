@@ -15,6 +15,7 @@
 		B002E2091C2ADAB1001511C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B002E2071C2ADAB1001511C1 /* LaunchScreen.storyboard */; };
 		B002E21E1C2BC97F001511C1 /* RYNetStatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B002E21D1C2BC97F001511C1 /* RYNetStatusManager.m */; };
 		B002E2211C2BC994001511C1 /* RYPreferanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B002E2201C2BC994001511C1 /* RYPreferanceManager.m */; };
+		B006E1001C4CE3A50007ED9F /* YYReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B006E0FF1C4CE3A50007ED9F /* YYReachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		B002E21D1C2BC97F001511C1 /* RYNetStatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RYNetStatusManager.m; sourceTree = "<group>"; };
 		B002E21F1C2BC994001511C1 /* RYPreferanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RYPreferanceManager.h; sourceTree = "<group>"; };
 		B002E2201C2BC994001511C1 /* RYPreferanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RYPreferanceManager.m; sourceTree = "<group>"; };
+		B006E0FE1C4CE3A50007ED9F /* YYReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYReachability.h; sourceTree = "<group>"; };
+		B006E0FF1C4CE3A50007ED9F /* YYReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYReachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,8 @@
 				B002E1FD1C2ADAB1001511C1 /* AppDelegate.m */,
 				B002E1FF1C2ADAB1001511C1 /* ViewController.h */,
 				B002E2001C2ADAB1001511C1 /* ViewController.m */,
+				B006E0FE1C4CE3A50007ED9F /* YYReachability.h */,
+				B006E0FF1C4CE3A50007ED9F /* YYReachability.m */,
 				B002E2021C2ADAB1001511C1 /* Main.storyboard */,
 				B002E2051C2ADAB1001511C1 /* Assets.xcassets */,
 				B002E2071C2ADAB1001511C1 /* LaunchScreen.storyboard */,
@@ -168,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B006E1001C4CE3A50007ED9F /* YYReachability.m in Sources */,
 				B002E21E1C2BC97F001511C1 /* RYNetStatusManager.m in Sources */,
 				B002E2011C2ADAB1001511C1 /* ViewController.m in Sources */,
 				B002E2211C2BC994001511C1 /* RYPreferanceManager.m in Sources */,

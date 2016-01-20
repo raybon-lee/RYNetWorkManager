@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger , NetWorkSatusType) {
 };
 
 typedef  void (^NetChangeStatusBlock)(NetWorkSatusType status);
-
+typedef void (^CallBackBlock)(NetWorkSatusType status,NSString * ssid);
 @interface RYPreferanceManager : NSObject
 
 
@@ -38,8 +38,10 @@ typedef  void (^NetChangeStatusBlock)(NetWorkSatusType status);
 
 @property (nonatomic, strong) RYNetStatusManager * netstatusManager;
 @property (nonatomic,strong ) NSNumber * currentNumberType;
+@property (nonatomic,strong) RYNetStatusManager * netManager;
 
 @property (nonatomic, copy) NetChangeStatusBlock netchangeNotifationBlock;
+@property (nonatomic,copy) CallBackBlock block;
 
 /**
  *  获取当前网络类型
@@ -74,6 +76,7 @@ typedef  void (^NetChangeStatusBlock)(NetWorkSatusType status);
 - (void )getReachablityStatusWithChangeBlock:(void (^)(NetWorkSatusType status))complete;
 
 
+- (void)listenLocalWifiBlock:(CallBackBlock)block;
 
 
 

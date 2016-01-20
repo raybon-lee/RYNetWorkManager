@@ -127,7 +127,7 @@ static void RYReachablityCallback(SCNetworkReachabilityRef target,SCNetworkReach
     static dispatch_queue_t serialQueue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        serialQueue  = dispatch_queue_create("www.xinling.com.RYReachability", DISPATCH_QUEUE_SERIAL);
+        serialQueue  = dispatch_queue_create("www.xinling.com.RYReachability", NULL);
        
     });
     return serialQueue;
@@ -185,7 +185,22 @@ static void RYReachablityCallback(SCNetworkReachabilityRef target,SCNetworkReach
    
     if (schedule) {
         SCNetworkReachabilityContext context = {0,(__bridge void *)self,NULL,NULL,NULL};
-        SCNetworkReachabilitySetCallback(self.ref, RYReachablityCallback, &context);
+        if (SCNetworkReachabilitySetCallback(self.ref, RYReachablityCallback, &context)) {
+            NSLog(@"设置回调成功");
+            CFRunLoopRef runloop  = CFRunLoopGetMain();
+            
+            if(SCNetworkReachabilityScheduleWithRunLoop(self.ref, runloop, kCFRunLoopCommonModes)) {
+//                SCNetworkReachabilitySetCallback(self.ref, NULL, NULL);
+                NSLog(@"设置成功");
+            }else{
+                NSLog(@"设置runloop 失败");
+                SCNetworkReachabilitySetCallback(self.ref, NULL, NULL);
+            }
+        }
+        else{
+            NSLog(@"回调设置失败");
+        }
+        
         SCNetworkReachabilitySetDispatchQueue(self.ref, [self.class shareSerialQueue]);
         
     }else{
@@ -241,7 +256,12 @@ RYReachabilityStatus status =RYReachabilityStatusFlags(self.flags, self.reachabl
 }
 + (instancetype)reachabilityWithHostName:(NSString *)hostname{
     SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithName(NULL, [hostname UTF8String]);
-    return [[self alloc] initWithReachabilityCNNetRef:ref];
+    if (ref) {
+        id reachability = [[self alloc]initWithReachabilityCNNetRef:ref];
+        return reachability;
+    }
+    return nil;
+    
 }
 + (instancetype)reachabilityForLocalWifi{
     struct sockaddr_in localWifiAddress;
@@ -266,9 +286,7 @@ RYReachabilityStatus status =RYReachabilityStatusFlags(self.flags, self.reachabl
     self.schedule = (self.notReachableBlock!=nil);
     
 }
-+ (instancetype)allocWithZone:(struct _NSZone *)zone{
-    return [super allocWithZone:zone];
-}
+
 - (void)dealloc{
     
     CFRelease(self.ref);
