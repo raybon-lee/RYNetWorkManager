@@ -134,7 +134,10 @@
             NSLog(@"======dfdfdfd");
             weakSelf.currentNumberType = [NSNumber numberWithInteger:man.status];
             NetWorkSatusType stat =   [weakSelf getReachablitySttatus];
-            weakSelf.block(stat,@"ddd");
+            if (weakSelf.block) {
+                 weakSelf.block(stat,@"ddd");
+            }
+           
         };
          self.netstatusManager  = [RYNetStatusManager reachabilityWithHostName:@"http://www.baidu.com"];
         self.netstatusManager.reachableBlock = ^(RYNetStatusManager * manager){
@@ -147,8 +150,10 @@
             
             weakSelf.currentNumberType = [NSNumber numberWithInteger:manager.status];
             NetWorkSatusType stat =   [weakSelf getReachablitySttatus];
+            if (weakSelf.netchangeNotifationBlock) {
+                weakSelf.netchangeNotifationBlock(stat);
+            }
             
-            weakSelf.netchangeNotifationBlock(stat);
             
             
             
