@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger,RYReachabilityStatus) {
 #endif
 @class RYNetStatusManager;
 extern NSString * const kRYReachabilityStatusChangeNotifation;
-
+static NSMutableArray * blockArray1=nil,* blockArray2=nil;
 typedef void (^connectReachable)(RYNetStatusManager * reachable);
 typedef void (^notConnectReachable)(RYNetStatusManager * reachable);
 @interface RYNetStatusManager : NSObject
@@ -72,6 +72,8 @@ typedef void (^notConnectReachable)(RYNetStatusManager * reachable);
 @property (nonatomic, strong) NSString     * carrierTypeName;
 @property (nonatomic, copy) connectReachable  reachableBlock;
 @property (nonatomic, copy) notConnectReachable notReachableBlock;
+//@property (nonatomic,strong)  NSMutableArray * blockArray1,* blockArray2;
+
 /**
  *  是否支持从蜂窝网络接入网络
  */

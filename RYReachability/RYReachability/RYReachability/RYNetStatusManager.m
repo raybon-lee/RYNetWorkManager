@@ -12,7 +12,7 @@
 #import <CoreTelephony/CTCarrier.h>
 
  NSString * const  kRYReachabilityStatusChangeNotifation = @"kRYReachabilityStatusChangeNotifation";
-
+static RYNetStatusManager * __netWorkManager = nil;
 static CTTelephonyNetworkInfo * RYTelphoyNet(){
     static CTTelephonyNetworkInfo * cttel;
     static dispatch_once_t onceToken;
@@ -84,17 +84,25 @@ static  RYReachabilityStatus  RYReachabilityStatusFlags(SCNetworkConnectionFlags
 }
 static void RYReachablityCallback(SCNetworkReachabilityRef target,SCNetworkReachabilityFlags flags, void * info){
     RYNetStatusManager * self = ((__bridge RYNetStatusManager *)info);
-    if (self.reachableBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.reachableBlock(self);
-        });
-    }else{
-        if (self.notReachableBlock) {
+    
+    for (connectReachable blockcon in blockArray1) {
+        if (blockcon) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.notReachableBlock(self);
+                blockcon(self);
             });
+
         }
     }
+    for (notConnectReachable nonBlock in blockArray2) {
+        if (nonBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                nonBlock(self);
+            });
+            
+        }
+    }
+    
+   
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter]postNotificationName:kRYReachabilityStatusChangeNotifation object:self];
     });
@@ -149,11 +157,28 @@ static void RYReachablityCallback(SCNetworkReachabilityRef target,SCNetworkReach
     return _netLock;
 }
 - (instancetype)init{
-    struct sockaddr_in zero_addr;
-    bzero(&zero_addr, sizeof(zero_addr));
-    zero_addr.sin_len = sizeof(zero_addr);
-    zero_addr.sin_family =AF_INET;
-    SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)&zero_addr);
+#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 90000) || (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100)
+    struct sockaddr_in6 localWifiAddress;
+    bzero(&localWifiAddress, sizeof(localWifiAddress));
+    localWifiAddress.sin6_len = sizeof(localWifiAddress);
+    localWifiAddress.sin6_family = AF_INET6;
+        //    localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+
+#else
+
+    struct sockaddr_in localWifiAddress;
+    bzero(&localWifiAddress, sizeof(localWifiAddress));
+    localWifiAddress.sin_len = sizeof(localWifiAddress);
+    localWifiAddress.sin_family = AF_INET;
+    localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+    
+#endif
+
+//    struct sockaddr_in zero_addr;
+//    bzero(&zero_addr, sizeof(zero_addr));
+//    zero_addr.sin_len = sizeof(zero_addr);
+//    zero_addr.sin_family =AF_INET;
+    SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)&localWifiAddress);
     return [self initWithReachabilityCNNetRef:ref];
     
 }
@@ -187,15 +212,15 @@ static void RYReachablityCallback(SCNetworkReachabilityRef target,SCNetworkReach
         SCNetworkReachabilityContext context = {0,(__bridge void *)self,NULL,NULL,NULL};
         if (SCNetworkReachabilitySetCallback(self.ref, RYReachablityCallback, &context)) {
             NSLog(@"设置回调成功");
-            CFRunLoopRef runloop  = CFRunLoopGetMain();
-            
-            if(SCNetworkReachabilityScheduleWithRunLoop(self.ref, runloop, kCFRunLoopCommonModes)) {
+//            CFRunLoopRef runloop  = CFRunLoopGetMain();
+//            
+//            if(SCNetworkReachabilityScheduleWithRunLoop(self.ref, runloop, kCFRunLoopCommonModes)) {
+////                SCNetworkReachabilitySetCallback(self.ref, NULL, NULL);
+//                NSLog(@"设置成功");
+//            }else{
+//                NSLog(@"设置runloop 失败");
 //                SCNetworkReachabilitySetCallback(self.ref, NULL, NULL);
-                NSLog(@"设置成功");
-            }else{
-                NSLog(@"设置runloop 失败");
-                SCNetworkReachabilitySetCallback(self.ref, NULL, NULL);
-            }
+//            }
         }
         else{
             NSLog(@"回调设置失败");
@@ -251,38 +276,75 @@ RYReachabilityStatus status =RYReachabilityStatusFlags(self.flags, self.reachabl
     return self.status !=RYReachabilityStatus_None;
 }
 + (instancetype)reachability{
-    return self.new;
+    return [self shareInstance];
     
+}
++ (instancetype)shareInstance{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        __netWorkManager = [[self alloc]init];
+        blockArray1 = [NSMutableArray array];
+        blockArray2 = [NSMutableArray array];
+        
+    });
+    return __netWorkManager;
+}
++ (instancetype)allocWithZone:(struct _NSZone *)zone{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        __netWorkManager = [super allocWithZone:zone];
+    });
+    return __netWorkManager;
 }
 + (instancetype)reachabilityWithHostName:(NSString *)hostname{
     SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithName(NULL, [hostname UTF8String]);
     if (ref) {
-        id reachability = [[self alloc]initWithReachabilityCNNetRef:ref];
+        id reachability = [[self shareInstance]initWithReachabilityCNNetRef:ref];
         return reachability;
     }
     return nil;
     
 }
 + (instancetype)reachabilityForLocalWifi{
+#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 90000) || (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100)
+    struct sockaddr_in6 localWifiAddress;
+    bzero(&localWifiAddress, sizeof(localWifiAddress));
+    localWifiAddress.sin6_len = sizeof(localWifiAddress);
+    localWifiAddress.sin6_family = AF_INET6;
+        //    localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+
+#else
+
     struct sockaddr_in localWifiAddress;
     bzero(&localWifiAddress, sizeof(localWifiAddress));
     localWifiAddress.sin_len = sizeof(localWifiAddress);
     localWifiAddress.sin_family = AF_INET;
     localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+    
+#endif
     RYNetStatusManager *net = [self reachabilityWithIPAddress:&localWifiAddress];
     net.reachableOnWWAN = NO;
     return net;
 }
 + (instancetype)reachabilityWithIPAddress:(const struct sockaddr_in *)hostAddress{
     SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
-    return [[self alloc] initWithReachabilityCNNetRef:ref];
+    return [[self shareInstance] initWithReachabilityCNNetRef:ref];
 }
 - (void)setReachableBlock:(connectReachable)reachableBlock{
-    _reachableBlock = [reachableBlock copy];
+    if (_reachableBlock!=reachableBlock) {
+        _reachableBlock = reachableBlock;
+    }
+    [blockArray1 addObject:_reachableBlock];
+    NSLog(@"count1 = %d",blockArray1.count);
     self.schedule = (self.reachableBlock!=nil);
 }
 - (void)setNotReachableBlock:(notConnectReachable)notReachableBlock{
-    _notReachableBlock = [notReachableBlock copy];
+//    _notReachableBlock = [notReachableBlock copy];
+    if (_notReachableBlock != notReachableBlock) {
+        _notReachableBlock = notReachableBlock;
+    }
+    [blockArray2 addObject:_notReachableBlock];
+     NSLog(@"count2 = %d",blockArray2.count);
     self.schedule = (self.notReachableBlock!=nil);
     
 }

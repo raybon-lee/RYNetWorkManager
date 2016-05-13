@@ -143,22 +143,21 @@
         self.netstatusManager.reachableBlock = ^(RYNetStatusManager * manager){
             if (manager.status==RYReachabilityStatus_WiFi) {
                 RYLog(@"current sttus is wifi");
-            }else{
+            }else {
                 RYLog(@"无网络");
                 
             }
-            
             weakSelf.currentNumberType = [NSNumber numberWithInteger:manager.status];
             NetWorkSatusType stat =   [weakSelf getReachablitySttatus];
             if (weakSelf.netchangeNotifationBlock) {
                 weakSelf.netchangeNotifationBlock(stat);
             }
-            
+
             
             
             
         };
-        
+
         
     }
     return self;
