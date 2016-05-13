@@ -2,6 +2,37 @@
 参考reachability 增加一些检测蜂窝网络的类型，同时调用更加方便，支持通知，和block 监听网络状态改变
 通过单例类进行设置
 
+=========
+
+###  增加对IPV6协议的支持
+   
+```
+- (instancetype)init{
+#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 90000) || (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100)
+struct sockaddr_in6 localWifiAddress;
+bzero(&localWifiAddress, sizeof(localWifiAddress));
+localWifiAddress.sin6_len = sizeof(localWifiAddress);
+localWifiAddress.sin6_family = AF_INET6;
+//    localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+
+#else
+
+struct sockaddr_in localWifiAddress;
+bzero(&localWifiAddress, sizeof(localWifiAddress));
+localWifiAddress.sin_len = sizeof(localWifiAddress);
+localWifiAddress.sin_family = AF_INET;
+localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+
+#endif
+
+SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)&localWifiAddress);
+return [self initWithReachabilityCNNetRef:ref];
+
+}
+   
+```
+
+
 ##  使用方法
 
 `#import "RYPreferanceManager.h"`
